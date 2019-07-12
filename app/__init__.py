@@ -5,6 +5,8 @@
 import flask
 from flask_login import LoginManager
 from app.models.base import db
+# from flask_mail import Mail
+from app.libs.email import mail
 # from app.models.book import Book
 # from app.models.user import User
 # from app.models.gift import Gift
@@ -14,6 +16,7 @@ from app.models.base import db
 """
 
 login_manager = LoginManager()
+# mail = Mail()
 
 
 def create_app():
@@ -28,6 +31,9 @@ def create_app():
     login_manager.init_app(app)
     login_manager.login_view = 'web.login'
     login_manager.login_message = '请先登录或注册'
+
+    # 初始化邮件系统
+    mail.init_app(app=app)
 
     # 初始化数据库
     db.init_app(app)

@@ -19,13 +19,14 @@ class MyWishes(object):
         return temp_wishes
 
     def __matching(self, wish):
+        count = 0
         for gift_count in self.__gifts_count_list:
             if wish.isbn == gift_count['isbn']:
                 count = gift_count['count']
-                r = {
-                    'wishes_count': count,
-                    'book': BookViewModel(wish.book),
-                    'id': wish.id
-                }
-                return r
+        r = {
+            'wishes_count': count,
+            'book': BookViewModel(wish.book),
+            'id': wish.id
+        }
+        return r
 

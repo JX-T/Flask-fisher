@@ -1,6 +1,22 @@
 from datetime import datetime
-from flask_sqlalchemy import SQLAlchemy, BaseQuery
+from contextlib import contextmanager
+
+from flask import current_app
+from flask_sqlalchemy import SQLAlchemy as _SQLAlchemy, BaseQuery
 from sqlalchemy import Integer, Column, SmallInteger
+
+
+class SQLAlchemy(_SQLAlchemy):
+    @contextmanager
+    def auto_commit(self, throw=True):
+        try:
+            yield
+            self.session.commit()
+        except Exception as e:
+            self.session.rollback()
+            current_app.logger.exception('%r' % e)
+            if throw:
+                raise e
 
 
 class Query(BaseQuery):
